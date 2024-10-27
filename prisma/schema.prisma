@@ -8,10 +8,23 @@ generator client {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  phoneNumber String   @unique
-  name        String?
-  createdAt   DateTime @default(now())
+  id          Int          @id @default(autoincrement())
+  phoneNumber String       @unique
+  createdAt   DateTime     @default(now())
+  sessions    Session[]
+  userDetails UserDetails?
+}
+
+model UserDetails {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @unique
+  name      String?
+  address   String?
+  latitude  Float?
+  longitude Float?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Otp {
@@ -22,4 +35,17 @@ model Otp {
   createdAt   DateTime @default(now())
 
   @@index([phoneNumber, otp])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([sessionToken])
+  @@index([userId])
 }
