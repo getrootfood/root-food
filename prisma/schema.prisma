@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  phoneNumber String   @unique
+  name        String?
+  createdAt   DateTime @default(now())
+}
+
+model Otp {
+  id          Int      @id @default(autoincrement())
+  phoneNumber String
+  otp         String
+  expiresAt   DateTime
+  createdAt   DateTime @default(now())
+
+  @@index([phoneNumber, otp])
+}
