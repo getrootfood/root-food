@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const expiresAt = new Date(
     Date.now() +
       //  5 * 60 * 1000
-      10 * 1000
+      15 * 1000
   );
 
   const data = await prisma.otp.findFirst({
